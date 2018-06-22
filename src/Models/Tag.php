@@ -8,12 +8,17 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Tag extends Model
 {
-    /**
-    * Don't auto-apply mass assignment protection.
-    *
-    * @var array
-    */
     protected $guarded = [];
+
+    public static function boot()
+    {
+        collect(['creating', 'updating'])->each(function ($event) {
+            static::$event(function ($tag) {
+                $tag->slug = $this->getSlugValue();
+                $this->save();
+            });
+        });
+    }
 
     public function taggables(): HasMany
     {
@@ -23,6 +28,11 @@ class Tag extends Model
     public function scopeOfNames(Builder $builder, array $names): Builder
     {
         return $builder->whereIn('name', $names);
+    }
+
+    public function getSlugValue(): string
+    {
+        return str_slug($this->name);
     }
 
     public static function getNames(): array
