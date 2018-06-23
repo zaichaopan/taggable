@@ -46,11 +46,11 @@ trait HasTags
 
     public function hasTag(string $tagName): bool
     {
-        return $this->tags()->whereName($tagName)->exist();
+        return $this->tags()->whereName($tagName)->exists();
     }
 
     protected function getTagCollection(array $tagNames): Collection
     {
-        return Tag::ofName(array_flatten($tagNames));
+        return Tag::ofNames(array_flatten($tagNames))->get();
     }
 }
