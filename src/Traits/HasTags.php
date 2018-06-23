@@ -2,7 +2,7 @@
 
 namespace Zaichaopan\Taggable\Traits;
 
-use Zaichaopan\Models\Tag;
+use Zaichaopan\Taggable\Models\Tag;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
@@ -30,7 +30,7 @@ trait HasTags
         $this->tags()->sync($this->getTagCollection($tagNames));
     }
 
-    /** 
+    /**
      *
      * @param string|array ...$tagNames
      */
