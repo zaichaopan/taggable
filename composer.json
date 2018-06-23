@@ -3,6 +3,10 @@
     "description": "A package to make eloquent model taggable",
     "type": "library",
     "license": "MIT",
+    "keywords": [
+        "laravel",
+        "tag"
+    ],
     "authors": [
         {
             "name": "zaichaopan",
@@ -10,6 +14,11 @@
         }
     ],
     "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "Zaichaopan\\Taggable\\": "src"
+        }
+    },
     "require": {
         "php": ">=7.1",
         "illuminate/support": "~5.5.0|~5.6.0"
@@ -18,16 +27,18 @@
         "orchestra/testbench": "^3.5.0",
         "phpunit/phpunit": "^7.2"
     },
-    "autoload": {
-        "psr-4": {
-            "Zaichaopan\\Taggable\\": "src"
-        }
-    },
     "autoload-dev": {
         "classmap": [
             "tests/TestCase.php",
             "tests/HasTagsTraitsTests.php",
             "tests/stubs/Activity.php"
         ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Zaichaopan\\Taggable\\TaggableServiceProvider"
+            ]
+        }
     }
 }
