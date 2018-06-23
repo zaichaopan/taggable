@@ -89,6 +89,25 @@ trait HasTagsTraitsTests
     }
 
     /** @test */
+    public function it_cannot_be_removed_a_invalid_tag()
+    {
+        $tagOne = Tag::create(['name' => 'outdoor']);
+        $tagTwo = Tag::create(['name' => 'sports']);
+        $model = $this->getModel();
+        $model->tag($tagOne->name, $tagTwo->name);
+        $model->unTag('invalid', $tagTwo->name);
+        $fetchedTags = $model->tags()->get();
+
+        $this->assertCount(1, $fetchedTags);
+        $this->assertTrue($fetchedTags->first()->is($tagOne));
+
+        $model->unTag('invalid');
+        $fetchedTags = $model->tags()->get();
+        $this->assertCount(1, $fetchedTags);
+        $this->assertTrue($fetchedTags->first()->is($tagOne));
+    }
+
+    /** @test */
     public function it_can_be_removed_all_tags()
     {
         $tag = Tag::create(['name' => 'outdoor']);
@@ -126,6 +145,30 @@ trait HasTagsTraitsTests
         $this->assertCount(2, $tagArray);
         $this->assertContains($tagThree->id, $tagArray);
         $this->assertContains($tagFour->id, $tagArray);
+    }
+
+    /** @test */
+    public function it_cannot_be_updated_tags_if_new_tags_are_invalid()
+    {
+        $tagOne = Tag::create(['name' => 'outdoor']);
+        $model = $this->getModel();
+        $model->tag($tagOne->name);
+        $fetchedTags = $model->tags()->get();
+
+        $this->assertCount(1, $fetchedTags);
+        $this->assertTrue($fetchedTags->first()->is($tagOne));
+
+        $model->reTag('invalid');
+        $fetchedTags = $model->tags()->get();
+        $this->assertCount(1, $fetchedTags);
+        $this->assertTrue($fetchedTags->first()->is($tagOne));
+
+        $tagTwo = Tag::create(['name' => 'indoor']);
+
+        $model->reTag('invalid', $tagTwo->name);
+        $fetchedTags = $model->tags()->get();
+        $this->assertCount(1, $fetchedTags);
+        $this->assertTrue($fetchedTags->first()->is($tagTwo));
     }
 
     /** @test */

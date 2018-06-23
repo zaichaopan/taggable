@@ -2,8 +2,8 @@
 
 namespace Zaichaopan\Taggable\Traits;
 
-use Zaichaopan\Taggable\Models\Tag;
 use Illuminate\Support\Collection;
+use Zaichaopan\Taggable\Models\Tag;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 trait HasTags
@@ -27,6 +27,11 @@ trait HasTags
      */
     public function reTag(...$tagNames): void
     {
+        $tags = $this->getTagCollection($tagNames);
+
+        if (count($tags) === 0) {
+            return;
+        }
         $this->tags()->sync($this->getTagCollection($tagNames));
     }
 
