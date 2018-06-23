@@ -22,7 +22,7 @@ class TestCase extends Orchestra\Testbench\TestCase
 
     public function tearDown()
     {
-        \Schema::drop('activity');
+        \Schema::drop('activities');
         \Schema::drop('tags');
         \Schema::drop('taggables');
 

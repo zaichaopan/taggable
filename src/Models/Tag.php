@@ -1,6 +1,6 @@
 <?php
 
- namespace  Zaichaopan\Models;
+namespace Zaichaopan\Taggable\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -14,8 +14,7 @@ class Tag extends Model
     {
         collect(['creating', 'updating'])->each(function ($event) {
             static::$event(function ($tag) {
-                $tag->slug = $this->getSlugValue();
-                $this->save();
+                $tag->slug = $tag->getSlugValue();
             });
         });
     }
@@ -35,8 +34,8 @@ class Tag extends Model
         return str_slug($this->name);
     }
 
-    public static function getNames(): array
+    public static function getNames()
     {
-        static::pluck('name')->toArray();
+        return static::pluck('name')->all();
     }
 }
